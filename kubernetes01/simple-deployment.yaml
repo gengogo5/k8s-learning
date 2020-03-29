@@ -1,15 +1,15 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: echo
   labels:
     app: echo
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: echo
-  template:
+  template: # template以下はpodでのspec定義と同義
     metadata:
       labels:
         app: echo
@@ -23,6 +23,6 @@ spec:
         ports:
         - containerPort: 80
       - name: echo
-        image: gihyodocker/echo:latest
+        image: gihyodocker/echo:patched
         ports:
         - containerPort: 8080
