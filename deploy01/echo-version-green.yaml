@@ -1,37 +1,25 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: echo-version
-  labels:
-    app: echo-version
-spec:
-  ports:
-  - port: 80
-    targetPort: 8080
-  selector:
-    app: echo-version
-    color: blue
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: echo-version
+  name: echo-version-green
   labels:
     app: echo-version
+    color: green
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: echo-version
+      color: green
   template:
     metadata:
       labels:
         app: echo-version
+        color: green
     spec:
       containers:
       - name: echo-version
-        image: gihyodocker/echo-version:0.1.0
+        image: gihyodocker/echo-version:0.2.0
         ports:
         - containerPort: 8080
         
