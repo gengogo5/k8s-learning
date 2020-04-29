@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: kube-system
+spec:
+  selector:
+    app: kibana
+  ports:
+  # kibanaへの転送設定(Serviceの5601に来たらkibanaの80に飛ばす)
+  - protocol: TCP
+    # 転送元ポート
+    port: 5601
+    # 転送先ポート
+    targetPort: http
+    # NodePortの固定指定
+    nodePort: 30050
+  # --service-node-port-rangeの範囲で割当られたポートに公開する(今回はnodePortを指定してるので30050固定)
+  type: NodePort
+
+---
+# DeploymentはappsのAPIGROUPに属してる
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: kube-system
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    # 指定したラベルと一致したPodTemplateが対象
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      # 上のselectorと対応してる
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: kibana:5.6
+        ports:
+        - containerPort: 5601
+          name: http
+        env:
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch:9200"
+
