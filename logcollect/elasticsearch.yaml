@@ -89,7 +89,7 @@ data:
     -Xmx256m
     -XX:+UseConcMarkSweepGC
     -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInnitiatingOccupancyOnly
+    -XX:+UseCMSInitiatingOccupancyOnly
     -XX:+AlwaysPreTouch
     -server
     -Xss1m
